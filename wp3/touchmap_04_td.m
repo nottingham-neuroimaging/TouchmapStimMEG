@@ -92,16 +92,6 @@ for ii = 1:Nblocks
         end
     end
     
-    switch dummy(ii)
-        case 0
-            stim_dummy(ii) = lo;
-        case 1
-            stim_dummy(ii) = hi;
-        case 2
-            stim_dummy(ii) = -lo;
-        case 3
-            stim_dummy(ii) = -hi;
-    end
     
     % Get timings
     trial_tot = 2*cue+iti;
@@ -138,7 +128,7 @@ for ii = 1:Nblocks
         % Draw cue circle
         Screen('FrameOval',window,[0 1 0],[[xCenter yCenter]-50 [xCenter yCenter]+50],lineWidthPix);
         Screen('Flip', window);
-        io64(ioObj,address,2^con(jj));
+        io64(ioObj,address,2^con_block(jj));
         
         % Stimulate
         WaitSecs('UntilTime', t+cue+trial_onset(jj));
@@ -161,6 +151,18 @@ for ii = 1:Nblocks
     
     % We now probe with a dummy trial just to see if they have been paying
     % attention to the task.
+    
+    switch dummy(ii)
+        case 0
+            stim_dummy(ii) = lo;
+        case 1
+            stim_dummy(ii) = hi;
+        case 2
+            stim_dummy(ii) = -lo;
+        case 3
+            stim_dummy(ii) = -hi;
+    end
+    
     WaitSecs(2);
     t = GetSecs;
     % Draw cue circle
@@ -184,16 +186,16 @@ for ii = 1:Nblocks
     if ~isempty(key)
         switch key
             case '6^'
-                if con(jj) < 2
+                if stim_dummy(ii) < 2
                     correct(ii) = 1;
                 end
             case '7&'
-                if con(jj) >= 2
+                if stim_dummy(ii) >= 2
                     correct(ii) = 1;
                 end
         end
     end
-    
+    t = GetSecs;
     for kk = 10:-1:1
         DrawFormattedText(window, sprintf('Short Break: %i seconds left',kk) , 'center', 'center', white);
         Screen('Flip',window,t+5+(10-kk))
