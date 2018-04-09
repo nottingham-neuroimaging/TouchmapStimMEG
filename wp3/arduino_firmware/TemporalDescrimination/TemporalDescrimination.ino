@@ -1,6 +1,6 @@
 #include <SPI.h>
 
-const int delay_length = 3;
+const int delay_length = 4;
 
 int piezoPins[] = {7, 8};
 
@@ -16,7 +16,7 @@ unsigned long now = 0;
 void setup() {
   Serial.begin(9600);
   Serial.setTimeout(5);
-  Serial.println("Serial Communication started");
+  Serial.println("Arduino: MEG Temporal Descimination Ready");
   SPI.begin(); 
 
     pinMode(piezoPins[0], OUTPUT);

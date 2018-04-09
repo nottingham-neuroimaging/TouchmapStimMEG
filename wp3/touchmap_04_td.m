@@ -4,7 +4,7 @@ clc
 sca
 
 %%
-Nblocks = 2;
+Nblocks = 8;  %% 8
 Ntrials = 20;
 cue = 0.75;
 iti = 1.5;
@@ -133,7 +133,7 @@ for ii = 1:Nblocks
         % Stimulate
         WaitSecs('UntilTime', t+cue+trial_onset(jj));
         if ~isempty(ard)
-            fprintf(ard,num2str(stim(jj)));
+           fprintf(ard,'%i',stim(jj));
         end
         WaitSecs('UntilTime', t+2*cue+trial_onset(jj));
         io64(ioObj,address,0);
@@ -170,7 +170,7 @@ for ii = 1:Nblocks
     Screen('FrameOval',window,[0 1 0],[[xCenter yCenter]-50 [xCenter yCenter]+50],lineWidthPix);
     Screen('Flip', window);
     if ~isempty(ard)
-        fprintf(ard,num2str(stim_dummy));
+        fprintf(ard,'%i',stim_dummy);
     end
     WaitSecs('UntilTime', t+2*cue);
     
@@ -197,7 +197,7 @@ for ii = 1:Nblocks
     end
     t = GetSecs;
     for kk = 10:-1:1
-        DrawFormattedText(window, sprintf('Short Break: %i seconds left',kk) , 'center', 'center', white);
+        DrawFormattedText(window, sprintf('Experiment resums in: %i seconds',kk) , 'center', 'center', white);
         Screen('Flip',window,t+5+(10-kk))
     end;
     WaitSecs('UntilTime',t+10);

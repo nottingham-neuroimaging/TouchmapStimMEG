@@ -61,7 +61,7 @@ for i = 1:numel(coms)
         devices{i,2} = com; %#ok<AGROW> Loop size is always small
         
         if nargin
-           if ~isempty(strfind(out{ind}(27:end-length),varargin(1)));
+           if ~isempty(strncmp(out{ind}(27:end-length),varargin(1),size(varargin{1},2))); % chanced to use strncmp
                target_port = ['COM' num2str(com)];
            end
         end

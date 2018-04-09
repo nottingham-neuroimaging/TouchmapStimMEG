@@ -44,7 +44,7 @@ DrawFormattedText(window, 'Ready' , 'center', 'center', white);
 Screen('Flip',window);
 KbWait();
 
-t = GeqtSecs;
+t = GetSecs;
 Screen('DrawLines', window, fixationCoords,...
     lineWidthPix, white, [xCenter yCenter], 2);
 Screen('Flip', window);

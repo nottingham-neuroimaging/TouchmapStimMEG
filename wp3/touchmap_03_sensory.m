@@ -16,7 +16,7 @@ D2 = {'0300'};
 %% Initialise Arduino
 delete(instrfindall)
 try
-    [~, port] = find_serial_object('Arduino');
+    [~, port] = find_serial_object({'Arduino'});
     ard = initialize_serial_port(port);
 catch
     warning('Arduino not found, entering dummy mode')
@@ -100,15 +100,15 @@ for ii = 1:Nblocks
     end
 
     if ii < Nblocks
-        WaitSecs(10);
-        io64(ioObj,PortAddress,4);
-        t = GetSecs();
-        for kk = 20:-1:1
-            DrawFormattedText(window, sprintf('Short Break: %i seconds left',kk) , 'center', 'center', white);
-            Screen('Flip',window,t+(20-kk))
-        end;
-        WaitSecs('UntilTime',t+20);
-        io64(ioObj,PortAddress,0);
+%         WaitSecs(10);
+%         io64(ioObj,PortAddress,4);
+%         t = GetSecs();
+%         for kk = 20:-1:1
+%             DrawFormattedText(window, sprintf('Short Break: %i seconds left',kk) , 'center', 'center', white);
+%             Screen('Flip',window,t+(20-kk))
+%         end;
+%         WaitSecs('UntilTime',t+20);
+%         io64(ioObj,PortAddress,0);
     else
         WaitSecs(10);
     end

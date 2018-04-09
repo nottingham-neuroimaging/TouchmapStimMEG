@@ -4,7 +4,7 @@ clc
 sca
 
 %%
-Ntrials = 40;
+Ntrials = 40; %% 40
 period = 2;
 iti = 12;
 jitter_max = 1;
