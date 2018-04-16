@@ -1,6 +1,6 @@
 #include <SPI.h>
 
-const int delay_length = 4;
+const int delay_length = 5;
 
 int piezoPins[] = {7, 8};
 
