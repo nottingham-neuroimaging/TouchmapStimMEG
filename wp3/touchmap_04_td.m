@@ -166,13 +166,13 @@ for ii = 1:Nblocks
     WaitSecs(2);
     t = GetSecs;
     % Draw cue circle
-    WaitSecs('UntilTime', t+cue);
+    WaitSecs('UntilTime', t+iti+cue);
     Screen('FrameOval',window,[0 1 0],[[xCenter yCenter]-50 [xCenter yCenter]+50],lineWidthPix);
     Screen('Flip', window);
     if ~isempty(ard)
-        fprintf(ard,'%i',stim_dummy);
+        fprintf(ard,'%i',stim_dummy(ii));
     end
-    WaitSecs('UntilTime', t+2*cue);
+    WaitSecs('UntilTime', t+iti+2*cue);
     
     
     DrawFormattedText(window, 'Which digit buzzed first?' , 'center', 'center', white);
@@ -197,7 +197,7 @@ for ii = 1:Nblocks
     end
     t = GetSecs;
     for kk = 10:-1:1
-        DrawFormattedText(window, sprintf('Experiment resums in: %i seconds',kk) , 'center', 'center', white);
+        DrawFormattedText(window, sprintf('Experiment resumes in: %i seconds',kk) , 'center', 'center', white);
         Screen('Flip',window,t+5+(10-kk))
     end;
     WaitSecs('UntilTime',t+10);
