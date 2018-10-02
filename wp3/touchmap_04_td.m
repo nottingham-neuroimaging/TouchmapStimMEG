@@ -4,6 +4,8 @@ clc
 sca
 
 %%
+hand = 'l'
+
 Nblocks = 8;  %% 8
 Ntrials = 20;
 cue = 0.75;
@@ -133,7 +135,7 @@ for ii = 1:Nblocks
         % Stimulate
         WaitSecs('UntilTime', t+cue+trial_onset(jj));
         if ~isempty(ard)
-           fprintf(ard,'%i',stim(jj));
+            fprintf(ard,'%i',stim(jj));
         end
         WaitSecs('UntilTime', t+2*cue+trial_onset(jj));
         io64(ioObj,address,0);
@@ -174,26 +176,36 @@ for ii = 1:Nblocks
     end
     WaitSecs('UntilTime', t+iti+2*cue);
     
-    
-    DrawFormattedText(window, 'Which digit buzzed first?' , 'center', 'center', white);
-    DrawFormattedText(window, 'Middle' , xCenter-200, yCenter+100, [1 1 0]);
-    DrawFormattedText(window, 'Index' , xCenter+100, yCenter+100, [0 0 1]);
-    Screen('Flip', window);
-    
-    [~, keyCode] = KbWait(0,2,t+2*cue+4);
-    key = KbName(find(keyCode));
-    correct(ii) = 0;
-    if ~isempty(key)
-        switch key
-            case '6^'
-                if stim_dummy(ii) < 2
-                    correct(ii) = 1;
+    switch hand
+        case {'l','r'}
+            DrawFormattedText(window, 'Which digit buzzed first?' , 'center', 'center', white);
+            switch hand
+                case 'r'
+                    DrawFormattedText(window, 'Middle' , xCenter-200, yCenter+100, [1 1 0]);
+                    DrawFormattedText(window, 'Index' , xCenter+100, yCenter+100, [0 0 1]);
+                case 'l'
+                    DrawFormattedText(window, 'Middle' , xCenter+200, yCenter+100, [1 1 0]);
+                    DrawFormattedText(window, 'Index' , xCenter-100, yCenter+100, [0 0 1]);
+            end
+            Screen('Flip', window);
+            
+            [~, keyCode] = KbWait(0,2,t+2*cue+4);
+            key = KbName(find(keyCode));
+            correct(ii) = 0;
+            if ~isempty(key)
+                switch key
+                    case {'2"';'6^'}
+                        if stim_dummy(ii) < 2
+                            correct(ii) = 1;
+                        end
+                    case {'3£','7&'}
+                        if stim_dummy(ii) >= 2
+                            correct(ii) = 1;
+                        end
                 end
-            case '7&'
-                if stim_dummy(ii) >= 2
-                    correct(ii) = 1;
-                end
-        end
+            end
+        otherwise
+            % Ignore the behavioural testing for  hatever reaaon.
     end
     t = GetSecs;
     for kk = 10:-1:1

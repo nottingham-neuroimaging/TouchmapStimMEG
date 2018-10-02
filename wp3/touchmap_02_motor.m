@@ -4,12 +4,14 @@ clc
 sca
 
 %%
+hand = 'l';
 Ntrials = 40; %% 40
 period = 2;
 iti = 12;
 jitter_max = 1;
 %% Initialise Parallel Port
 address = hex2dec('C050');
+address2 = hex2dec('C030');
 ioObj = io64;
 % initialize the interface to the inpoutx64 system driver
 status = io64(ioObj);
@@ -72,7 +74,7 @@ for jj = 1:Ntrials
     key = KbName(find(keyCode));
     if ~isempty(key)
         switch key
-            case 'q'
+            case {'q';'ESCAPE'}
                 sca
                 error('Test aborted by operator')
         end
@@ -82,7 +84,12 @@ for jj = 1:Ntrials
     Screen('FrameOval',window,[0 1 0],[[xCenter yCenter]-75 [xCenter yCenter]+75],lineWidthPix);
     rotmat = [cosd(0) -sind(0); sind(0) cosd(0)];
     rotCoords = (rotCoords'*rotmat)';
-    handCoords = [rotCoords + shim_L staticCoords + shim_R];
+    switch hand
+        case 'r'
+            handCoords = [rotCoords + shim_L staticCoords + shim_R];
+        case 'l'
+            handCoords = [rotCoords + shim_R staticCoords + shim_L];
+    end
     Screen('DrawLines', window, handCoords,...
         lineWidthPix, white, [xCenter yCenter], 2);
     Screen('Flip', window,t+trial_onset(jj)-1);
@@ -90,10 +97,19 @@ for jj = 1:Ntrials
     
     % Motor animation
     io64(ioObj,address,1)
+    io64(ioObj,address2,255)
     for ii = 1:length(ang)
-        rotmat = [cosd(ang(ii)) -sind(ang(ii)); sind(ang(ii)) cosd(ang(ii))];
-        rotCoords = (rotCoords'*rotmat)';
-        handCoords = [rotCoords + shim_L staticCoords + shim_R];
+        
+        switch hand
+            case 'r'
+                rotmat = [cosd(ang(ii)) -sind(ang(ii)); sind(ang(ii)) cosd(ang(ii))];
+                rotCoords = (rotCoords'*rotmat)';
+                handCoords = [rotCoords + shim_L staticCoords + shim_R];
+            case 'l'
+                rotmat = [cosd(-ang(ii)) -sind(-ang(ii)); sind(-ang(ii)) cosd(-ang(ii))];
+                rotCoords = (rotCoords'*rotmat)';
+                handCoords = [rotCoords + shim_R staticCoords + shim_L];
+        end
         
         Screen('DrawLines', window, handCoords,...
             lineWidthPix, white, [xCenter yCenter], 2);
@@ -103,6 +119,7 @@ for jj = 1:Ntrials
     
     WaitSecs('UntilTime', t+period+trial_onset(jj));
     io64(ioObj,address,0);
+    io64(ioObj,address2,0);
     
     % Redraw fixation cross
     Screen('DrawLines', window, fixationCoords,...

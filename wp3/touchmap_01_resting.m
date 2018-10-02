@@ -3,17 +3,6 @@ close all
 clc
 sca
 
-%%
-Ntrials = 60;
-period = 2;
-iti = 8;
-jitter_max = 1;
-%% Initialise Parallel Port
-address = hex2dec('C050');
-ioObj = io64;
-% initialize the interface to the inpoutx64 system driver
-status = io64(ioObj);
-io64(ioObj,address,0);
 %% Initialise PTB
 PsychDefaultSetup(2);
 hz=Screen('NominalFrameRate',0);
@@ -50,16 +39,17 @@ Screen('DrawLines', window, fixationCoords,...
 Screen('Flip', window);
 
 % escape loop, can be used to pause before drawing cue circle
-[~, keyCode] = KbWait(0,2,t+600);
-key = KbName(find(keyCode));
-if ~isempty(key)
-    switch key
-        case 'q'
-            sca
-            error('Test aborted by operator')
+for ii = 1:600
+    [~, keyCode] = KbWait(0,2,t+ii);
+    key = KbName(find(keyCode));
+    if ~isempty(key)
+        switch key
+            case {'q';'ESCAPE'}
+                sca
+                error('Test aborted by operator')
+        end
     end
 end
-
 
 %% Task finished :)
 DrawFormattedText(window, 'Task Complete' , 'center', 'center', white);

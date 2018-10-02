@@ -41,7 +41,7 @@ Screen('BlendFunction', window, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA');
 Screen('TextFont', window, 'Arial');
 Screen('TextSize', window, 72);
 [xCenter, yCenter] = RectCenter(windowRect);
-fixCrossDimPix = 20;
+fixCrossDimPix = 100;
 xCoords = [-fixCrossDimPix fixCrossDimPix 0 0];
 yCoords = [0 0 -fixCrossDimPix fixCrossDimPix];
 allCoords = [xCoords; yCoords];
